@@ -27,6 +27,12 @@ SET(DEMBONES_SOURCE
 source_group(dembones FILES ${DEMBONES_SOURCE})
 find_package(OpenMP)
 
+if (MSVC)
+	# /bigobj required, otherwise demBone.cpp failed to build on Visual Studio 2017
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /bigobj")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+endif ()
+
 if (OPENMP_FOUND)
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")

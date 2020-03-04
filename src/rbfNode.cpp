@@ -578,7 +578,17 @@ MStatus RBFNode::getQuaternionValues(MArrayDataHandle& hArray, int count,
     CHECK_MSTATUS_AND_RETURN_IT(status);
     MDataHandle hQuaternion = hArray.inputValue(&status);
     CHECK_MSTATUS_AND_RETURN_IT(status);
+#ifdef MAYA_API_VERSION < 20190000
+    MVector v = hQuaternion.asVector();
+    assert(v.length() == 4);
+    double4 values;
+    values[0] = v[0];
+    values[1] = v[1];
+    values[2] = v[2];
+    values[3] = v[3];
+#else
     double4& values = hQuaternion.asDouble4();
+#endif
     MQuaternion q(values);
     quaternions[i] = q;
   }
